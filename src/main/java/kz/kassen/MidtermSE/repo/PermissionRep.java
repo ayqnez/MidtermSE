@@ -1,10 +1,10 @@
 package kz.kassen.MidtermSE.repo;
 
-import kz.kassen.MidtermSE.entity.User;
+import kz.kassen.MidtermSE.entity.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepo extends JpaRepository<User, Long> {
-    User findByEmail(String username);
+public interface PermissionRep extends JpaRepository<Permission, Long> {
+    Permission findByName(String name);
 }
