@@ -31,6 +31,11 @@ public class User implements UserDetails {
     )
     private List<Permission> permissions;
 
+    public User(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return permissions;
