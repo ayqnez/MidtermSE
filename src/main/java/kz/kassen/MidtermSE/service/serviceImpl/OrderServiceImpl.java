@@ -34,6 +34,13 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDtoList(orderRepo.findOrdersByUserId(userId));
     }
 
+
+    public List<OrderDTO> findOrdersForCurrentUser(User user) {
+        if (user == null) return List.of();
+        return orderMapper.toDtoList(orderRepo.findOrdersByUserId(user.getId()));
+    }
+
+
     @Override
     public void createOrderForUser(Long userId) {
         User user = userRepo.findById(userId).orElseThrow();

@@ -1,36 +1,30 @@
 package kz.kassen.MidtermSE.controller;
 
-import kz.kassen.MidtermSE.dto.UserDTO;
-import kz.kassen.MidtermSE.service.serviceImpl.UserServiceImpl;
+import kz.kassen.MidtermSE.entity.User;
+import kz.kassen.MidtermSE.service.MyUserService;
+import kz.kassen.MidtermSE.service.serviceImpl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/users")
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final MyUserService myUserService;
+    private final ProductServiceImpl productService;
 
-    @GetMapping()
-    public List<UserDTO> getAll() {
-        return userService.getAll();
+    @PostMapping("/register")
+    public void register(@RequestBody User model){
+        myUserService.register(model);
     }
 
-    @GetMapping("/{userId}")
-    public UserDTO getById(@PathVariable Long userId) {
-        return userService.getById(userId);
-    }
-
-    @PostMapping()
-    public void createUser(@RequestBody UserDTO userDTO) {
-        userService.createUser(userDTO);
-    }
-
-    @PutMapping("/edit/{userId}")
-    private void editUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
-        userService.updateUser(userId, userDTO);
+    @GetMapping("/products")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<?> getAll(){
+        return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 }
